@@ -22,6 +22,7 @@ public class RssApplication implements CommandLineRunner  {
 	@Override
 	public void run(String... args) throws Exception {
 		String xml = service.getOriginalXML();
+		System.out.println(xml);;
 		Rss data = service.comvert(xml);
 		service.exportXLSX(data);
 		 

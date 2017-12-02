@@ -5,6 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.packtpub.mongo.chapter6</groupId>
 	<artifactId>tw-rss-xml</artifactId>
+	<version>1.0-SNAPSHOT</version>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.8</maven.compiler.source>
@@ -114,23 +115,18 @@
 							<name>${docker.repository.name}:${project.version}</name>
 							<alias>${project.artifactId}</alias>
 							<build>
-								<from>sdorra/oracle-java-8:8u151</from>
-								<maintainer>sdorra</maintainer>
-<!-- 								<from>java:8-jre</from> -->
-<!--                                 <maintainer>sourabhh</maintainer> -->
+								<from>robert0714/oracle-java-8:8u151</from>
+								<maintainer>robert0714</maintainer> 
 								<assembly>
 									<descriptor>docker-assembly.xml</descriptor>
 								</assembly>
 								<ports>
 									<port>8080</port>
 								</ports>								
-								<cmd>								
-								    <shell>apt-get update -y  </shell>
-								    <shell>sudo apt-get install -y  libcurl3 php5-curl  </shell>
-									<shell>apt-get install -y curl </shell>
-<!-- 									<shell>java -jar \ -->
-<!-- 										/maven/${project.build.finalName}.jar server \ -->
-<!-- 										/maven/docker-config.yml</shell> -->
+								<cmd>
+									<shell>java -jar \
+										/maven/${project.build.finalName}.jar server \
+										/maven/docker-config.yml</shell>
 								</cmd>
 							</build>
 							<run>
@@ -141,6 +137,7 @@
 								<volumes>
 									<bind>
 										<volume>${user.home}/logs:/logs:ro</volume>
+										<volume>${user.home}/output:/root</volume>
 									</bind>
 								</volumes>								
 								<log>
