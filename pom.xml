@@ -1,0 +1,183 @@
+<?xml version="1.0"?>
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.packtpub.mongo.chapter6</groupId>
+	<artifactId>tw-rss-xml</artifactId>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+		<!-- windows要先安裝Docker-toolbox -->
+		<!-- https://download.docker.com/win/stable/DockerToolbox.exe -->
+		<!-- mvn docker:help -->
+		<!-- docker-machine rm default -->
+		<!-- docker-machine create  \
+		-\
+		-virtualbox-memory 4096 default  -->
+		<!-- eval $( docker-machine env  default )  -->
+		<!-- mvn clean package docker:build -->
+		<!-- mvn docker:start -->
+		<!-- For Docker hub leave empty; use "localhost:5000/" for a local Docker  Registry -->
+		<docker.registry.name>localhost:5000/</docker.registry.name>
+		<docker.repository.name>${docker.registry.name}robert0714/${project.artifactId}</docker.repository.name>
+		<docker.host.address>192.168.99.100</docker.host.address>
+		<docker.port>8080</docker.port>
+	</properties>
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>1.5.8.RELEASE</version>
+	</parent>
+
+	<dependencies> 
+		<dependency>
+			<groupId>com.fasterxml.jackson.dataformat</groupId>
+			<artifactId>jackson-dataformat-xml</artifactId>
+		</dependency>		
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>1.3.2</version>
+			<scope>test</scope>
+		</dependency>	
+		<dependency>
+		    <groupId>org.apache.httpcomponents</groupId>
+		    <artifactId>httpclient</artifactId>
+		    <scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-web</artifactId>
+			<scope>test</scope>
+		</dependency> 
+		<dependency>
+		    <groupId>org.apache.commons</groupId>
+		    <artifactId>commons-compress</artifactId>
+		    <version>1.15</version>
+		    <scope>test</scope>
+		</dependency>
+		<dependency>
+		    <groupId>net.sf.sevenzipjbinding</groupId>
+		    <artifactId>sevenzipjbinding</artifactId>
+		    <version>9.20-2.00beta</version>
+		    <scope>test</scope>
+		</dependency>
+		<dependency>
+		    <groupId>net.sf.sevenzipjbinding</groupId>
+		    <artifactId>sevenzipjbinding-all-platforms</artifactId>
+		    <version>9.20-2.00beta</version>
+		    <scope>test</scope>
+		</dependency>		
+		<dependency>
+		    <groupId>org.tukaani</groupId>
+		    <artifactId>xz</artifactId>
+		    <version>1.6</version>
+		    <scope>test</scope>
+		</dependency>
+	</dependencies>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+                <groupId>io.fabric8</groupId>
+			    <artifactId>docker-maven-plugin</artifactId>
+			    <version>0.23.0</version>
+				<configuration>
+					<images>
+						<image>
+							<name>${docker.repository.name}:${project.version}</name>
+							<alias>${project.artifactId}</alias>
+
+							<build>
+								<from>sdorra/oracle-java-8:8u151</from>
+								<maintainer>sdorra</maintainer>
+<!-- 								<from>java:8-jre</from> -->
+<!--                                 <maintainer>sourabhh</maintainer> -->
+								<assembly>
+									<descriptor>docker-assembly.xml</descriptor>
+								</assembly>
+								<ports>
+									<port>8080</port>
+								</ports>
+								<cmd>
+									<shell>java -jar \
+										/maven/${project.build.finalName}.jar server \
+										/maven/docker-config.yml</shell>
+								</cmd>
+							</build>
+							<run>
+								<namingStrategy>alias</namingStrategy>
+								<ports>
+									<port>${docker.port}:8080</port>
+								</ports>
+								<volumes>
+									<bind>
+										<volume>${user.home}/logs:/logs:ro</volume>
+									</bind>
+								</volumes>
+								<wait>
+									<url>http://${docker.host.address}:${docker.port}/profile/place</url>
+									<time>100000</time>
+								</wait>
+								<log>
+									<prefix>${project.artifactId}</prefix>
+									<color>cyan</color>
+								</log>
+							</run>
+						</image>
+					</images>
+				</configuration>
+			</plugin>
+			<!-- <plugin> -->
+			<!-- <groupId>org.apache.maven.plugins</groupId> -->
+			<!-- <artifactId>maven-failsafe-plugin</artifactId> -->
+			<!-- <configuration> -->
+			<!-- <phase>integration-test</phase> -->
+			<!-- <groups>com.packtpub.mmj.restaurant.resources.user.DockerIntegrationTest</groups> -->
+			<!-- <systemPropertyVariables> -->
+			<!-- <service.url>http://${docker.host.address}:${docker.port}/</service.url> -->
+			<!-- </systemPropertyVariables> -->
+			<!-- </configuration> -->
+			<!-- <executions> -->
+			<!-- <execution> -->
+			<!-- <goals> -->
+			<!-- <goal>integration-test</goal> -->
+			<!-- <goal>verify</goal> -->
+			<!-- </goals> -->
+			<!-- </execution> -->
+			<!-- </executions> -->
+			<!-- </plugin> -->
+			<!-- <plugin> -->
+			<!-- <groupId>org.apache.maven.plugins</groupId> -->
+			<!-- <artifactId>maven-surefire-plugin</artifactId> -->
+			<!-- <configuration> -->
+			<!-- <excludedGroups>com.packtpub.mmj.user.resources.docker.DockerIntegrationTest</excludedGroups> -->
+			<!-- </configuration> -->
+			<!-- </plugin> -->
+		</plugins>
+	</build>
+
+	<repositories>
+		<repository>
+			<id>spring-releases</id>
+			<name>Spring Releases</name>
+			<url>https://repo.spring.io/libs-release</url>
+		</repository>
+	</repositories>
+	<pluginRepositories>
+		<pluginRepository>
+			<id>spring-releases</id>
+			<name>Spring Releases</name>
+			<url>https://repo.spring.io/libs-release</url>
+		</pluginRepository>
+	</pluginRepositories>
+</project>   

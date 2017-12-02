@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+	<Properties>
+		<Property name="systemBehaviorFile">target/logs/system-behavior.log</Property>
+		<Property name="systemBehaviorFilePattern">target/logs/system-behavior-%d{MM-dd-yyyy}-%i.log</Property>
+
+		<Property name="userMappingBehaviorFile">target/logs/user-mapping.log</Property>
+		<Property name="userMappingBehaviorFilePattern">target/logs/user-mapping-%d{MM-dd-yyyy}-%i.log</Property>
+		
+		<Property name="userBehaviorFile">target/logs/user-behavior.log</Property>
+		<Property name="userBehaviorFilePattern">target/logs/user-behavior-%d{MM-dd-yyyy}-%i.log</Property>
+		
+		<Property name="markerLogPattern">%d{yyyy-MM-dd HH:mm:ss} [%t][%-5level] %c{1.}.%M - [%marker][%X{remoteIP},%X{userId}]  %msg%n</Property>
+		<Property name="logPattern">%d{yyyy-MM-dd HH:mm:ss} [%t][%-5level] %c{1.}.%M - %msg%n</Property>
+	</Properties>
+	<Appenders>
+		<!-- Log Of System Behavior -->
+		<RollingFile name="LogAppender" fileName="${systemBehaviorFile}"
+			filePattern="${systemBehaviorFilePattern}">
+			<PatternLayout
+				pattern="${logPattern}" />
+			<Policies>
+				<TimeBasedTriggeringPolicy />
+				<SizeBasedTriggeringPolicy size="20MB" />
+			</Policies>
+			<DefaultRolloverStrategy max="10" />
+		</RollingFile>
+		
+		<!-- Log Of Console -->
+		<Console name="Console" target="SYSTEM_OUT" follow="true">
+			<PatternLayout pattern="${logPattern}" />
+		</Console>
+	</Appenders>
+	<Loggers>
+	
+		<Logger name="develop" level="error" additivity="false">
+	      	<AppenderRef ref="LogAppender"/>
+	    </Logger>
+
+	</Loggers>
+</Configuration>
