@@ -11,5 +11,6 @@
             <source>src/main/resources/docker-config.yml</source>
             <outputDirectory>/</outputDirectory>
         </file>-->
-    </files>
+    </files> 
+       
 </assembly>

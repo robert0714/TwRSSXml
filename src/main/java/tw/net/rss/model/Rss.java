@@ -1,4 +1,4 @@
-package develop.odata.etl.model.rss;
+package tw.net.rss.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
