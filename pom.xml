@@ -126,7 +126,7 @@
 								<cmd>
 									<shell>java -jar \
 										/maven/${project.build.finalName}.jar server \
-										/maven/docker-config.yml</shell>
+										/maven/docker-config.yml  -Duser.language=zh-TW -Duser.timezone=Asia/Taipei</shell>
 								</cmd>
 							</build>
 							<run>
