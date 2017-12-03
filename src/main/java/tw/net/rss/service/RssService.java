@@ -95,7 +95,7 @@ public class RssService {
 			process = Runtime.getRuntime().exec(cmd);
 		} else {
 		    process = Runtime.getRuntime()
-		      .exec(String.format("curl -X GET -H \"Accept-Language: zh-TW\" %s", resourceUrl));
+		      .exec(String.format("curl    %s", resourceUrl));
 		}		
 		final String xml = IOUtils.toString(	process.getInputStream());
 		return xml ; 

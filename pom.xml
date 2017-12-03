@@ -110,6 +110,17 @@
 			    <artifactId>docker-maven-plugin</artifactId>
 			    <version>0.23.0</version>
 				<configuration>
+				<!-- Work with a docker-machine -->
+				<!-- https://github.com/fabric8io/docker-maven-plugin/blob/master/src/main/asciidoc/inc/_global-configuration.adoc#docker-machine -->
+					<machine>
+					    <name>maven</name>
+					    <autoCreate>true</autoCreate>
+					    <createOptions>
+					      <driver>virtualbox</driver>
+					      <virtualbox-cpu-count>2</virtualbox-cpu-count>
+					      <virtualbox-memory>4096</virtualbox-memory>					      
+					    </createOptions>
+					</machine>
 					<images>
 						<image>
 							<name>${docker.repository.name}:${project.version}</name>
@@ -126,7 +137,7 @@
 								<cmd>
 									<shell>java -jar \
 										/maven/${project.build.finalName}.jar server \
-										/maven/docker-config.yml  -Duser.language=zh-TW -Duser.timezone=Asia/Taipei</shell>
+										/maven/docker-config.yml </shell>
 								</cmd>
 							</build>
 							<run>
@@ -136,8 +147,8 @@
 								</ports>
 								<volumes>
 									<bind>
-										<volume>${user.home}/logs:/logs:ro</volume>
-										<volume>${user.home}/output:/root</volume>
+										<volume>${user.home}/logs:/logs:rw</volume>
+										<volume>${user.home}/output:/root:rw</volume>
 									</bind>
 								</volumes>								
 								<log>
