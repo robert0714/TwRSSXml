@@ -117,15 +117,15 @@
 				<configuration>
 				<!-- Work with a docker-machine -->
 				<!-- https://github.com/fabric8io/docker-maven-plugin/blob/master/src/main/asciidoc/inc/_global-configuration.adoc#docker-machine -->
-					<machine>
-					    <name>maven</name>
-					    <autoCreate>true</autoCreate>
-					    <createOptions>
-					      <driver>virtualbox</driver>
-					      <virtualbox-cpu-count>2</virtualbox-cpu-count>
-					      <virtualbox-memory>4096</virtualbox-memory>					      
-					    </createOptions>
-					</machine>
+<!-- 					<machine> -->
+<!-- 					    <name>maven</name> -->
+<!-- 					    <autoCreate>true</autoCreate> -->
+<!-- 					    <createOptions> -->
+<!-- 					      <driver>virtualbox</driver> -->
+<!-- 					      <virtualbox-cpu-count>2</virtualbox-cpu-count> -->
+<!-- 					      <virtualbox-memory>4096</virtualbox-memory>					       -->
+<!-- 					    </createOptions>					     -->
+<!-- 					</machine> -->
 					<images>
 						<image>
 							<name>${docker.repository.name}:${project.version}</name>
