@@ -10,7 +10,7 @@ import tw.net.rss.model.Rss;
 import tw.net.rss.service.RssService;
 
 @SpringBootApplication
-public class RssApplication implements CommandLineRunner  {
+public class RssApplication  {
 	 
 	
 	@Autowired
@@ -20,7 +20,7 @@ public class RssApplication implements CommandLineRunner  {
 		SpringApplication.run(RssApplication.class, args);
 	}
 
-	@Override
+	
 	public void run(String... args) throws Exception {
 //		String xml = service.getOriginalXML();
 //		System.out.println(xml);;

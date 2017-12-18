@@ -50,7 +50,7 @@ public class RssEndpoint {
 				}
 			});
 
-	@GetMapping(produces = { MediaType.APPLICATION_JSON_VALUE }, value = "/")
+	@GetMapping(produces = { MediaType.APPLICATION_JSON_VALUE } )
 	public ResponseEntity<Item[]> listdata() {
 		Item[] data = null;
 		try {
